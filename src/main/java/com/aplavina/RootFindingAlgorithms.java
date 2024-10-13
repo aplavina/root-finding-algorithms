@@ -5,7 +5,7 @@ import java.util.function.Function;
 public class RootFindingAlgorithms {
     private static final double GOLDEN_RATIO_COEFFICIENT1 = 0.382;
     private static final double GOLDEN_RATIO_COEFFICIENT2 = 0.618;
-    private static final double DERIVATIVE_PRECISION = 0.0000000000001;
+    private static final double DERIVATIVE_PRECISION = 0.000001;
 
     public static Answer bisection(Function<Double, Double> function, double a, double b, double epsilon) {
         while (b - a > 2 * epsilon) {
@@ -72,8 +72,24 @@ public class RootFindingAlgorithms {
         return new Answer(chordInterceptPoint, function.apply(chordInterceptPoint));
     }
 
+    public static Answer newton(Function<Double, Double> function, double initial, double epsilon) {
+        double prevX = initial;
+        double prevXDerivative = getDerivative(function, prevX);
+        while (Math.abs(prevXDerivative) > epsilon) {
+            double secondDerivative = getSecondDerivative(function, prevX);
+            prevX = prevX - prevXDerivative / getSecondDerivative(function, prevX);
+            prevXDerivative = getDerivative(function, prevX);
+        }
+        return new Answer(prevX, function.apply(prevX));
+    }
+
     private static double getDerivative(Function<Double, Double> function, double x) {
         return (function.apply(x + DERIVATIVE_PRECISION) - function.apply(x)) / DERIVATIVE_PRECISION;
+    }
+
+    private static double getSecondDerivative(Function<Double, Double> function, double x) {
+        return (function.apply(x + DERIVATIVE_PRECISION) - 2 * function.apply(x) + function.apply(x - DERIVATIVE_PRECISION))
+                / (DERIVATIVE_PRECISION * DERIVATIVE_PRECISION);
     }
 
     public static class Answer {

@@ -26,7 +26,10 @@ public class Main {
             System.out.println("xm = " + answerChord.getXm());
             System.out.println("ym = " + answerChord.getYm());
 
-
+            System.out.println("Newton method: ");
+            Answer answerNewton = RootFindingAlgorithms.newton(function, b, epsilon);
+            System.out.println("xm = " + answerNewton.getXm());
+            System.out.println("ym = " + answerNewton.getYm());
         } catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
         }
