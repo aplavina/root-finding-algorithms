@@ -76,7 +76,6 @@ public class RootFindingAlgorithms {
         double prevX = initial;
         double prevXDerivative = getDerivative(function, prevX);
         while (Math.abs(prevXDerivative) > epsilon) {
-            double secondDerivative = getSecondDerivative(function, prevX);
             prevX = prevX - prevXDerivative / getSecondDerivative(function, prevX);
             prevXDerivative = getDerivative(function, prevX);
         }
